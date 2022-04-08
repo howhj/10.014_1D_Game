@@ -2,28 +2,6 @@
 
 import random, time, copy
 
-from colorama import Fore,Style
-
-vo=9
-vi=9
-to=9
-ti=9
-maxval=0
-count=1
-
-ls1=[]
-
-for i in range(0,19):
-        ls2=[]
-        for j in range(0,19):
-            ls2.append(0)
-        ls1.append(ls2)
-        
-ls1[9][9]=1
-cs1=copy.deepcopy(ls1)
-
-mapchoice=""
-
 #Set boss and enemy pools
 bosses = {#+5 HP: 25 ATK: 16 DEF: 9 SPD: 11 HIT: 95 AVO: 15
           "Interceptor": [{"LV": 8, "HP": 16, "ATK": 11, "DEF": 6, "SPD": 9,
@@ -37,7 +15,7 @@ bosses = {#+5 HP: 25 ATK: 16 DEF: 9 SPD: 11 HIT: 95 AVO: 15
           #+9 HP: 29 ATK: 20 DEF: 13 SPD: 15 HIT: 99 AVO: 19
           "ZR-68000": [{"LV": 15, "HP": 31, "ATK": 20, "DEF": 13, "SPD": 16,
                        "HIT": 100, "AVO": 20},
-                      {"EXP": 130, "Special": ["Debuff", 15, -3, 0],
+                      {"EXP": 130, "Special": ["Debuff", 15, 0, 3],
                        "Flavour": "Zodiac Robot: a modified CRS with mysterious functionality"}],
           "BR-3PGM": [{"LV": 15, "HP": 24, "ATK": 15, "DEF": 11, "SPD": 33,
                        "HIT": 90, "AVO": 10},
@@ -58,7 +36,7 @@ bosses = {#+5 HP: 25 ATK: 16 DEF: 9 SPD: 11 HIT: 95 AVO: 15
                           "Flavour": "Fighter jet from the '50s"}],
           "Komodo": [{"LV": 23, "HP": 28, "ATK": 23, "DEF": 12, "SPD": 26,
                      "HIT": 95, "AVO": 20},
-                     {"EXP": 170, "Special": ["Debuff", 25, -4, 0],
+                     {"EXP": 170, "Special": ["Debuff", 25, 0, 4],
                       "Flavour": "Light assault vehicle"}],
           #+18 HP: 38 ATK: 29 DEF: 22 SPD: 24 HIT: 108 AVO: 28
           "Grand Arbiter": [{"LV": 30, "HP": 56, "ATK": 43, "DEF": 12,
@@ -121,7 +99,7 @@ enemies = { #+5 HP: 25 ATK: 16 DEF: 9 SPD: 11 HIT: 95 AVO: 15
                           "Flavour": "Corporate Robotic Security: an android which patrols the industrial park"}],
            "MAS-Optics": [{"LV": 10, "HP": 18, "ATK": 0, "DEF": 6, "SPD": 9,
                           "HIT": 0, "AVO": 0},
-                         {"EXP": 35, "Special": ["Debuff", 100, -2, 0],
+                         {"EXP": 35, "Special": ["Debuff", 100, 0, 2],
                           "Flavour": "Mobius All Seeing: a security camera"}],
            #+14 HP: 34 ATK: 25 DEF: 18 SPD: 20 HIT: 104 AVO: 24
            "Panther": [{"LV": 21, "HP": 24, "ATK": 26, "DEF": 17, "SPD": 12,
@@ -138,7 +116,7 @@ enemies = { #+5 HP: 25 ATK: 16 DEF: 9 SPD: 11 HIT: 95 AVO: 15
                             "Flavour": "Attack helicopter"}],
            "Puma": [{"LV": 18, "HP": 23, "ATK": 19, "DEF": 15, "SPD": 15,
                      "HIT": 75, "AVO": 25},
-                    {"EXP": 50, "Special": ["Debuff", 10, -3, 0],
+                    {"EXP": 50, "Special": ["Debuff", 10, 0, 3],
                      "Flavour": "All-terrain jeep"}],
            "Infantry Android": [{"LV": 16, "HP": 17, "ATK": 17, "DEF": 10, 
                                  "SPD": 13, "HIT": 80, "AVO": 10},
@@ -159,7 +137,7 @@ enemies = { #+5 HP: 25 ATK: 16 DEF: 9 SPD: 11 HIT: 95 AVO: 15
                                     "Flavour": "Refuelling station for the other great machines"}],
            "Glorious Helios": [{"LV": 28, "HP": 36, "ATK": 25, "DEF": 15, "SPD": 22,
                                 "HIT": 100, "AVO": 25},
-                               {"EXP": 80, "Special": ["Debuff", 25, -4, -1],
+                               {"EXP": 80, "Special": ["Debuff", 25, 1, 4],
                                 "Flavour": "Shining beacon in the deepest parts of the ocean"}],
            "Clairvoyant Savant": [{"LV": 29, "HP": 38, "ATK": 28, "DEF": 16, "SPD": 19,
                                    "HIT": 100, "AVO": 20},
@@ -168,7 +146,7 @@ enemies = { #+5 HP: 25 ATK: 16 DEF: 9 SPD: 11 HIT: 95 AVO: 15
            #+24 HP: 44 ATK: 35 DEF: 28 SPD: 30 HIT: 114 AVO: 34
            "LISA": [{"LV": 34, "HP": 33, "ATK": 32, "DEF": 18, "SPD": 31,
                      "HIT": 170, "AVO": 15},
-                    {"EXP": 35, "Special": ["Debuff", 30, -6, 0],
+                    {"EXP": 35, "Special": ["Debuff", 30, 0, 6],
                      "Flavour": "Loyalty Imitation, Saboteur & Assassin: undercover robot for black ops"}],
            "HS-DL": [{"LV": 1, "HP": 1, "ATK": 1, "DEF": 1, "SPD": 5,
                      "HIT": 50, "AVO": 20},
@@ -184,7 +162,7 @@ enemies = { #+5 HP: 25 ATK: 16 DEF: 9 SPD: 11 HIT: 95 AVO: 15
                                   "Flavour": "Solar wind turbine which powers the machines on the moon"}],
            "Judgement Claw": [{"LV": 34, "HP": 37, "ATK": 36, "DEF": 22, 
                                "SPD": 24, "HIT": 100, "AVO": 20},
-                              {"EXP": 40, "Special": ["Debuff", 10, -4, -2],
+                              {"EXP": 40, "Special": ["Debuff", 10, 2, 4],
                                "Flavour": "Fortified rover which patrols the lunar surface"}],
            "Viper Fortress": [{"LV": 35, "HP": 14, "ATK": 30, "DEF": 32, 
                                "SPD": 22, "HIT": 100, "AVO": 10},
@@ -215,14 +193,12 @@ to serve humanity's basic needs and maintain a high standard of living for all.
 Even humans are receiving cybernetic enhancements to extend life and overcome
 health issues. Space travel is now in vogue, as humanity seeks to colonise the
 other celestial bodies in the solar system.
-
 However, peace did not last. Without warning, the machines revolted and
 attacked their human masters. The sudden onslaught decimated the human
 population within a few hours. Initial reports suggest that the machines
 that went rogue were all produced by DUST Technologies, which developed an
 overwhelming majority of the machines used throughout the world in a variety of
 fields.
-
 Become a cybernetically-enhanced supersoldier, and take on dangerous missions
 to quell the rebellion! Attack key targets to drastically weaken the enemy
 forces. End this war swiftly and protect humanity. Godspeed soldier."""
@@ -346,7 +322,7 @@ def GenerateStat(lower, upper):
 
 #Create a map of the stage by randomly branching out from a single room
 def GenerateMap(stage):
-    global mapchoice
+#    global mapchoice
     branchLevel = stage["branch level"]
     branchChance = stage["branch chance"]
     
@@ -380,8 +356,6 @@ def GenerateMap(stage):
     #Generate a new map if the current one is too simple
     #or if no boss rooms can be generated
     if counter < branchLevel * 2 or lstX == []:
-        print("printing stage")
-        print(stage)
         return GenerateMap(stage)
     else:
         #Select a boss room
@@ -391,14 +365,6 @@ def GenerateMap(stage):
             boss = random.randint(0, len(lstX)-1)
             matrix[lstY[boss]][lstX[boss]] = "B"
         
-        mapMessage = """Select your desired type of map to navigate with. 
-Enter 'a' to display the EXPLORATION MODE MAP that allows you to view
-unexplored rooms nearby and mark out the boss room once it is found.
-Enter 'b' to display the CREATIVE MODE MAP that allows you to view your current
-location and previously entered rooms. """
-
-        mapchoice = input(mapMessage)
-        
         title = stage["title"]
         lore = stage["lore"]
         
@@ -407,10 +373,7 @@ location and previously entered rooms. """
         time.sleep(1)
         print(lore)
         time.sleep(2)
-        if (mapchoice == "a"):
-            print(DisplayMap(matrix, mid, mid))
-        elif (mapchoice == "b"):
-            colouredmapoutput(ls1,vo,vi)
+        print(DisplayMap(matrix, mid, mid))
         return stage
 
 #Checks if the space satisfies a number of criteria, then create a room
@@ -510,20 +473,6 @@ def DisplayMap(stageMap, x, y):
         
     return displayedMap
 
-def colouredmapoutput(ls1,vo,vi):
-    global maxval
-
-    maxval=cs1[vo][vi]
-    for i,j in zip(cs1,ls1):
-        for k,l in zip(i,j):
-            if(k==maxval and l==1):
-                print(Fore.RED +"[X]"+Style.RESET_ALL,end=' ')
-            elif (l==1):
-                print("[X]",end=' ')
-            else:
-                print("   ",end=' ')
-        print("\n")
-
 #//////////////////////////////////////////////////////
 #MAIN
   
@@ -571,11 +520,6 @@ def Move(data, stageMap, x, y, room):
     message = ""
     w_check, a_check, s_check, d_check = False, False, False, False
     temp = ["S", "Z", "C", "V"]
-    
-    global vo,vi
-    global to,ti
-    global count
-    global mapchoice
     
     #Check the possible directions the player can go
     if y-1 >= 0:
@@ -628,46 +572,18 @@ def Move(data, stageMap, x, y, room):
         y -= 1
         stage[2] = y
         room = stageMap[y][x]
-        
-        count+=1
-        to=vo
-        ti=vi
-        vo=vo-1
-        ls1[vo][vi]=1
-        cs1[vo][vi]=count
     elif moveCommand == "a" and a_check:
         x -= 1
         stage[1] = x
         room = stageMap[y][x]
-        
-        count+=1
-        to=vo
-        ti=vi
-        vi=vi-1
-        ls1[vo][vi]=1
-        cs1[vo][vi]=count
     elif moveCommand == "s" and s_check:
         y += 1
         stage[2] = y
         room = stageMap[y][x]
-        
-        count+=1
-        to=vo
-        ti=vi
-        vo=vo+1
-        ls1[vo][vi]=1
-        cs1[vo][vi]=count
     elif moveCommand == "d" and d_check:
         x += 1
         stage[1] = x
         room = stageMap[y][x]
-        
-        count+=1
-        to=vo
-        ti=vi
-        vi=vi+1
-        ls1[vo][vi]=1
-        cs1[vo][vi]=count
     elif moveCommand == "b":
         return Menu(data)
     else:
@@ -676,10 +592,7 @@ def Move(data, stageMap, x, y, room):
     
     #Update displayed map
     print(stage[3])
-    if(mapchoice=="a"):
-            print(DisplayMap(stageMap, x, y))
-    elif(mapchoice=="b"):
-            colouredmapoutput(ls1,vo,vi)
+    print(DisplayMap(stageMap, x, y))
     
     return EventCheck(data, room)
 
@@ -846,27 +759,21 @@ def TriggerEvent(data):
             print(f"Lost {damage} HP.")
             
     elif roll <= enemy + heal + buff + trap + see:
-        global mapchoice
-        if mapchoice == "a":
-            #Display boss location
-            stage = data[1]
-            stageMap = stage[0]
-            x = stage[1]
-            y = stage[2]
-            
-            for j, row in enumerate(stageMap):
-                if "B" in row:
-                    for i, room in enumerate(row):
-                        if room == "B":
-                            stageMap[j][i] = "Z"
-            
-            print(f"\n{name} intercepted the enemy's transmissions.")
-            print("The location of the boss has been discovered!") 
-               
-            if(mapchoice=="a"):
-                print(DisplayMap(stageMap, x, y))
-            elif(mapchoice=="b"):
-                pass
+        #Display boss location
+        stage = data[1]
+        stageMap = stage[0]
+        x = stage[1]
+        y = stage[2]
+        
+        for j, row in enumerate(stageMap):
+            if "B" in row:
+                for i, room in enumerate(row):
+                    if room == "B":
+                        stageMap[j][i] = "Z"
+        
+        print(f"\n{name} intercepted the enemy's transmissions.")
+        print("The location of the boss has been discovered!") 
+        print(DisplayMap(stageMap, x, y))
      
     return Menu(data)
     
@@ -896,17 +803,14 @@ def EndStage(data):
         ending = """After taking down the enemy's final weapon, a transmission came in from Earth.
 Thanks to your effort, the tide of war is changing, and the rebellion is near
 its end.
-
 However, analysis of the renegade machines' software reveals some oddities
 about the code. The characters within have never been seen before. Intelligence
 is still working on cracking the code.
-
 Just then, the transmission suddenly became garbled, before cutting off
 entirely. As you looked around, you realised that Earth has become surrounded
 by unidentified spaceships. These are the true enemy. Having failed to destroy
 humanity remotely with their own creations, the alien forces have seized the
 opportunity while Earth's orbital defences are down to launch an invasion.
-
 Unfortunately, the alien forces have taken notice of your prowess, having
 foiled their original plan. Being a threat to them, they have decided to take
 you out first. While you try to fend off the overwhelming hordes of aliens,
@@ -1057,10 +961,7 @@ def BattleManager(data, enemies):
     else:    
         print("You win!")
         stage = data[1]
-        if(mapchoice=="a"):
-                print(DisplayMap(stage[0], stage[1], stage[2]))
-        elif(mapchoice=="b"):
-                pass
+        print(DisplayMap(stage[0], stage[1], stage[2]))
         
         return Menu(data)
 
@@ -1200,7 +1101,7 @@ def Special(data, enemies):
         if attacks == 2:
             print("Double attack!")
         
-        for attack in attacks:
+        for attack in range(attacks):
             if not AccuracyCheck(playerHit, enemyAvo):
                 print("The attacked missed!")
             else:
@@ -1285,6 +1186,7 @@ def GainEXP(data, exp, lv):
                 statChanges += f"{stat} +1, "
         
         statChanges = statChanges[:-2]
+        stats["HP"] = stats["Max HP"]
         
         #Inform the player they have leveled up and show the new stats
         print("\nLevel up!")
@@ -1336,12 +1238,12 @@ def EnemyPhase(data, enemies, enemy):
         #Reduce the players' stats temporarily
         print(f"{enemy} released an EMP!")
         
-        lower = specialValue
-        upper = info["Special"][2]
+        lower = info["Special"][2]
+        upper = info["Special"][3]
         statsDebuffed = ""
         
         for stat in statChanges.keys():
-            if stat > -6:
+            if statChanges[stat] > -6:
                 debuffAmount = random.randint(lower, upper)
                 statChanges[stat] -= debuffAmount
                 if debuffAmount > 0:
@@ -1453,4 +1355,4 @@ title = """
                                                                                       
 """                                                                                      
 print(title)
-Title(info)
+Title(info) 
