@@ -1,12 +1,10 @@
-# 10014-1D-Game
+# 10014-1D-Game: Tranquilizer
 
-A roguelike turn-based RPG for the term 1 10.014 1D project.
+A roguelike turn-based RPG for the term 1 10.014 1D project. The goal of the project was to create a game that runs in a CLI.
 
 This is pretty much a mashup of mechanics from various games. The random map generation is inspired by The Binding of Isaac. The battle system uses mechanics from Fire Emblem and Etrian Odyssey. The story and enemy names are based off of various shmups, Darius Gaiden in particular. In fact, that's where the name of the game (Tranquilizer) came from; it's one of the BGM in Darius Gaiden. Likewise, the silly ending is done in a similar vein to the Zone W ending.
 
-There are 5 levels in total. The goal is to find the boss of each level and defeat it. Your character grows stronger by defeating enemies and gaining EXP.
-
-I didn't have time to balance the difficulty though.
+There are 5 levels in total. The goal is to find the boss of each level and defeat it. Your character grows stronger by defeating enemies and gaining EXP. I didn't have time to balance the difficulty though.
 
 I know the code is an atrocity. It's a combination of lack of programming knowledge (at the time) and having to submit everything in one file.
 
