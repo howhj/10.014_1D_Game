@@ -1,4 +1,4 @@
-# 10014-1D-Game: Tranquilizer
+# 10.014 1D Game: Tranquilizer
 
 A roguelike turn-based RPG for the term 1 10.014 1D project. The goal of the project was to create a game that runs in a CLI.
 
